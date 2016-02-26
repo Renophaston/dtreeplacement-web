@@ -61,7 +61,10 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 
-# Don't commit databases
+# PyCharm
+.idea
+
+# Data storage databases
 *.db
 *.sqlite
 *.sqlite3

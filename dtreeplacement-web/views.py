@@ -1,3 +1,5 @@
+"""Views and routes for the UI."""
+
 from app import app
 from flask import render_template
 

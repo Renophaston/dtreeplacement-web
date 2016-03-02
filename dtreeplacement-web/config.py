@@ -1,3 +1,5 @@
+"""Configuration of the app."""
+
 import os
 
 

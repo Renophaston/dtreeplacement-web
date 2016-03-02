@@ -1,3 +1,5 @@
+"""Set up the Flask app object and the db."""
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 

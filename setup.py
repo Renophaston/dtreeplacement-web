@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(
-    name='dtreeplacement-web',
+    name='dtreeplacement_web',
     version='0.1',
-    packages=['dtreeplacement-web'],
+    packages=['dtreeplacement_web'],
     url='https://github.com/Renophaston/dtreeplacement-web',
     license='The MIT License (MIT)',
     author='Renophaston',

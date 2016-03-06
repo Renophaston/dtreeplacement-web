@@ -2,8 +2,7 @@
 
 from app import app, db
 from flask import render_template
-from models import Item, Membership
-from sqlalchemy.orm.exc import NoResultFound
+from models import Item
 
 
 @app.route('/')
@@ -35,10 +34,7 @@ def item_index():
 
 @app.route('/item/<int:item_id>')
 def item_view(item_id):
-    try:
-        item = Item.query.filter(Item.id == item_id).one()
-    except NoResultFound as ex:
-        item = None
+    item = Item.query.filter(Item.id == item_id).first()
     if item is None:
         message = 'No fucking items matching id {}.'.format(item_id)
     else:

@@ -10,7 +10,14 @@
 <h1>Actions</h1>
 <ul>
     <li><a href="{{ url_for('index') }}">Index</a></li>
-    <li><a href="{{ url_for('intext') }}">Test</a></li>
+    <li><a href="{{ url_for('create_tables') }}">create tables</a></li>
+    <li><a href="{{ url_for('item_index') }}">items</a></li>
+</ul>
+<h1>Items</h1>
+<ul>
+    {% for item in items %}
+        <li>{{ item.content }}</li>
+    {% endfor %}
 </ul>
 </body>
 </html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Item selection</title>
+</head>
+<body>
+<form>
+    {% for item in items %}
+        <li><a href="{{ url_for('item_view', item_id=item.id) }}">{{ item.content }}</a></li>
+    {% endfor %}
+</form>
+</body>
+</html>

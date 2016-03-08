@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-</head>
-<body>
+{% extends 'base.j2' %}
+
+{% block title %}Index{% endblock %}
+{% block content %}
 <h1>Message</h1>
 <pre>{{ message }}</pre>
 <h1>Actions</h1>
 <ul>
     <li><a href="{{ url_for('index') }}">Index</a></li>
     <li><a href="{{ url_for('create_tables') }}">create tables</a></li>
-    <li><a href="{{ url_for('item_index') }}">items</a></li>
+    <li><a href="{{ url_for('items.index') }}">items</a></li>
 </ul>
 <h1>Items</h1>
 <ul>
@@ -19,5 +16,4 @@
         <li>{{ item.content }}</li>
     {% endfor %}
 </ul>
-</body>
-</html>
+{% endblock %}

@@ -10,5 +10,5 @@ setup(
     author_email='',
     description='Third attempt at a replacement for the way I use Treeline, web-interface',
     zip_safe=False,
-    install_requires=['Flask','SQLAlchemy']
+    install_requires=['Flask','SQLAlchemy','Flask-Migrate']
 )

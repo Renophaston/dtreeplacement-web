@@ -14,3 +14,8 @@ def index():
 def item_detail(item_id):
     item = Item.query.filter(Item.id == item_id).first_or_404()
     return render_template('items/item_detail.j2', item=item)
+
+
+@items.errorhandler(404)
+def item_not_found(error):
+    return render_template('items/item_detail.j2', item=None), 404

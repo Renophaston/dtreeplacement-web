@@ -1,0 +1,14 @@
+{% extends 'base.j2' %}
+{% block title %}Item Detail{% endblock %}
+{% block content %}
+    {% if item %}
+    <h2>Item detail</h2>
+    <ul>
+        <li>ID: <code>{{ item.id }}</code></li>
+        <li>Content: <code>{{ item.content }}</code></li>
+    </ul>
+    {% else %}
+        <p>No item found with that ID.</p>
+    {% endif %}
+    <a href="{{ url_for('items.index') }}"><- Back to item index</a>
+{% endblock content %}

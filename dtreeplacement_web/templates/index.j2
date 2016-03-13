@@ -2,18 +2,10 @@
 
 {% block title %}Index{% endblock %}
 {% block content %}
-<h1>Message</h1>
-<pre>{{ message }}</pre>
-<h1>Actions</h1>
+<h2>Actions</h2>
 <ul>
     <li><a href="{{ url_for('index') }}">Index</a></li>
     <li><a href="{{ url_for('create_tables') }}">create tables</a></li>
     <li><a href="{{ url_for('items.index') }}">items</a></li>
 </ul>
-<h1>Items</h1>
-<ul>
-    {% for item in items %}
-        <li>{{ item.content }}</li>
-    {% endfor %}
-</ul>
-{% endblock %}
+{% endblock content %}

@@ -12,5 +12,5 @@ def index():
 
 @items.route('/<int:item_id>')
 def item_detail(item_id):
-    item = Item.query.filter(Item.id == item_id).first()
+    item = Item.query.filter(Item.id == item_id).first_or_404()
     return render_template('items/item_detail.j2', item=item)

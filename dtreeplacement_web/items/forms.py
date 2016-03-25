@@ -13,3 +13,8 @@ class ItemForm(wtforms.Form):
             (2, 'Two')),
         coerce=int
     )
+
+    def save_item(self, item):
+        self.populate_obj(item)
+        # TODO: add the groups
+        return item

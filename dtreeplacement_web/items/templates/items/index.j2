@@ -7,5 +7,10 @@
         <li><a href="{{ url_for('items.item_detail', item_id=item.id) }}">{{ item.content }}</a></li>
     {% endfor %}
     </ul>
-    <a href="{{ url_for('index') }}"><- Back to index</a>
+
+    <hr />
+    <ul>
+        <li><a href="{{ url_for('items.add') }}">Add item</a></li>
+        <li><a href="{{ url_for('index') }}">Back to index</a></li>
+    </ul>
 {% endblock content %}

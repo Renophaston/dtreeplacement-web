@@ -1,13 +1,25 @@
 {% extends 'base.j2' %}
 {% block title %}Item Detail{% endblock %}
 {% block content %}
-    {% if item %}
+    {%- if item %}
     <h2>Item detail</h2>
     <ul>
         <li>ID: <code>{{ item.id }}</code></li>
         <li>Content: <code>{{ item.content }}</code></li>
         <li>Created: <code>{{ item.created_timestamp }}</code></li>
         <li>Modified: <code>{{ item.modified_timestamp }}</code></li>
+        {%- if groups %}
+            <li>Member of:
+            {% macro item_link(item_id, item_content) -%}
+                <a href="{{ url_for('items.item_detail', item_id=item_id) }}">{{ item_content }}</a>
+            {%- endmacro -%}
+            {%- for group in groups -%}
+                <!--{{ "<a href='%s'>%s</a>"|format(url_for('items.item_detail', item_id=group.id), group.content) }}-->
+                {{- item_link(group.id, group.content) -}}
+                {%- if loop.last != True -%},  {% endif -%}
+            {%- endfor -%}
+            </li>
+        {%- endif %}
     </ul>
     {% else %}
         <p>No item found with that ID.</p>

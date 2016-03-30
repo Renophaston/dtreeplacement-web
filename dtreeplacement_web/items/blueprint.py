@@ -50,9 +50,15 @@ def add():
 
             # then redirect to the item detail for the added item
             return redirect(url_for('items.item_detail', item_id=item.id))
+        else:
+            # todo: something better
+            print("form didn't validate")
+            print(form.errors)
+
     # otherwise show the add item form
     else:
         form = ItemForm()
+
     return render_template('items/add.j2', form=form)
 
 

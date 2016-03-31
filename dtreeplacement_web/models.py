@@ -23,6 +23,9 @@ class Item(db.Model):
     #     # call parent constructor
     #     super(Item, self).__init__(*args, **kwargs)
 
+    def __init__(self, content):
+        self.content = content
+
     def __repr__(self):
         return '<Item: {}>'.format(self.content)
 
@@ -39,6 +42,10 @@ class Membership(db.Model):
     __table_args__ = (
         db.UniqueConstraint(group_id, member_id),
     )
+
+    def __init__(self, group_id, member_id):
+        self.group_id = group_id
+        self.member_id = member_id
 
     def __repr__(self):
         return '<Membership: {0} is in group {1}>'.format(

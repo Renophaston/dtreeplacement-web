@@ -33,18 +33,16 @@ def add():
     if request.method == 'POST':
         form = ItemForm(request.form)
         if form.validate():
-            # add the item
-            item = form.populate_item(Item())
+            # create an Item and fill it with the form data
+            # (remember, the groups aren't accounted for here)
+            item = Item(form.content.data)
             db.session.add(item)
             db.session.commit()
 
             # then add the appropriate entries in the membership table
-            # fixme: the add form doesn't update with new data even on reload
             for group in form.groups.data:
                 # print("group: {}".format(group))
-                membership = Membership()
-                membership.group_id = group
-                membership.member_id = item.id
+                membership = Membership(group, item.id)
                 db.session.add(membership)
             db.session.commit()
 

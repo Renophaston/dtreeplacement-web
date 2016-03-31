@@ -34,14 +34,14 @@ def add():
         form = ItemForm(request.form)
         if form.validate():
             # create an Item and fill it with the form data
-            # (remember, the groups aren't accounted for here)
+            # (remember, the groups aren't accounted for right here)
             item = Item(form.content.data)
             db.session.add(item)
+            # need to add the item before the Membership table can refer to it
             db.session.commit()
 
             # then add the appropriate entries in the membership table
             for group in form.groups.data:
-                # print("group: {}".format(group))
                 membership = Membership(group, item.id)
                 db.session.add(membership)
             db.session.commit()

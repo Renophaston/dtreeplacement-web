@@ -18,11 +18,6 @@ class Item(db.Model):
         onupdate=datetime.datetime.now
     )
 
-    # override constructor if necessary
-    # def __init__(self, *args, **kwargs):
-    #     # call parent constructor
-    #     super(Item, self).__init__(*args, **kwargs)
-
     def __init__(self, content):
         self.content = content
 
@@ -48,7 +43,7 @@ class Membership(db.Model):
         self.member_id = member_id
 
     def __repr__(self):
-        return '<Membership: {0} is in group {1}>'.format(
+        return '<Membership: item {0} is in group {1}>'.format(
             self.member_id,
             self.group_id
         )

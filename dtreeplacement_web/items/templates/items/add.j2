@@ -5,6 +5,7 @@
         {% for field in form %}
             {{ field.label() }}
             {{ field() }}
+            {%- for error in field.errors %}<span class="error">{{ error }}</span>{%- endfor %}
         {% endfor %}
         <button type="submit">Add item</button>
         <a href="{{ url_for('items.index') }}">Cancel</a>

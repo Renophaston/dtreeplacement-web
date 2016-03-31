@@ -1,10 +1,14 @@
 import wtforms
+from wtforms.validators import DataRequired
 from models import Item
 
 
 class ItemForm(wtforms.Form):
     # e.g., "Superman #75"
-    content = wtforms.StringField('Content')
+    content = wtforms.StringField(
+        'Content',
+        validators=[DataRequired()]
+    )
     # items to select as "parents" for this item
     groups = wtforms.SelectMultipleField(
         'Groups',

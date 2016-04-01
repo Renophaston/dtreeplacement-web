@@ -36,6 +36,7 @@ class Membership(db.Model):
     # only include a relationship in this table once
     __table_args__ = (
         db.UniqueConstraint(group_id, member_id),
+        # todo: make a CheckConstraint(?) to keep an item out of its own group
     )
 
     def __init__(self, group_id, member_id):

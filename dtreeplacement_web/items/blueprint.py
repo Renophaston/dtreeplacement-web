@@ -60,6 +60,32 @@ def add():
     return render_template('items/add.j2', form=form)
 
 
+@items.route('/<item_id>/edit', methods=['GET', 'POST'])
+def edit(item_id):
+    item = Item.query.filter(Item.id == item_id).first_or_404()
+    if request.method == 'POST':
+        # we received data, so modify the database
+        form = ItemForm(request.form, obj=item)
+        if form.validate():
+            item.content = form.content.data
+            db.session.add(item)
+            db.session.commit()
+
+            # todo: change the relationships, too
+
+            # then redirect to the item_detail for the changed item
+            return redirect(url_for('items.item_detail', item_id=item.id))
+        else:
+            # todo: something better
+            print("form didn't validate")
+            print(form.errors)
+    else:
+        # we didn't receive data, so display the form
+        form = ItemForm(obj=item)
+
+    return render_template('items/edit.j2', item=item, form=form)
+
+
 @items.errorhandler(404)
 def item_not_found(error):
     return render_template('items/item_detail.j2', item=None), 404

@@ -24,5 +24,8 @@
     {% else %}
         <p>No item found with that ID.</p>
     {% endif %}
-    <a href="{{ url_for('items.index') }}">Back to item index</a>
+    <ul>
+        <a href="{{ url_for('items.edit', item_id=item.id) }}">Edit item</a>
+        <a href="{{ url_for('items.index') }}">Back to item index</a>
+    </ul>
 {% endblock content %}

@@ -81,7 +81,7 @@ def edit(item_id):
             print(form.errors)
     else:
         # we didn't receive data, so display the form
-        form = ItemForm(obj=item)
+        form = ItemForm(item=item)
 
     return render_template('items/edit.j2', item=item, form=form)
 

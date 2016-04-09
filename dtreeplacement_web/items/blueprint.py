@@ -69,9 +69,25 @@ def edit(item_id):
         if form.validate():
             item.content = form.content.data
             db.session.add(item)
+            # have to commit this before doing stuff in another table which
+            # references this one
             db.session.commit()
 
-            # todo: change the relationships, too
+            # change the membership table
+            # fixme: this just removes all the memberships this item has, then
+            # adds back the new set of memberships; it could be more efficient
+            existing_memberships = Membership.query.filter(
+                Membership.member_id == item_id)
+            new_memberships = [Membership(group_id, item_id)
+                               for group_id in form.groups.data]
+
+            # add the new memberships to the database
+            for existing_membership in existing_memberships:
+                db.session.delete(existing_membership)
+            db.session.add_all(new_memberships)
+
+            # commit the changes to the database
+            db.session.commit()
 
             # then redirect to the item_detail for the changed item
             return redirect(url_for('items.item_detail', item_id=item.id))

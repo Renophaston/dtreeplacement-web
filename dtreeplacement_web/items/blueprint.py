@@ -41,9 +41,9 @@ def add():
             db.session.commit()
 
             # then add the appropriate entries in the membership table
-            for group in form.groups.data:
-                membership = Membership(group, item.id)
-                db.session.add(membership)
+            memberships = [Membership(group_id, item.id)
+                           for group_id in form.groups.data]
+            db.session.add_all(memberships)
             db.session.commit()
 
             # then redirect to the item detail for the added item

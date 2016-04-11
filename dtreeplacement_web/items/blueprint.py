@@ -81,12 +81,16 @@ def edit(item_id):
             new_memberships = [Membership(group_id, item_id)
                                for group_id in form.groups.data]
 
-            # add the new memberships to the database
+            # delete old relationships
             for existing_membership in existing_memberships:
                 db.session.delete(existing_membership)
-            db.session.add_all(new_memberships)
+            # if I didn't commit these before adding the new ones, I'd get a
+            # uniqueness exception; I guess it doesn't just do this part first
+            # by itself
+            db.session.commit()
 
-            # commit the changes to the database
+            # add the new memberships to the database
+            db.session.add_all(new_memberships)
             db.session.commit()
 
             # then redirect to the item_detail for the changed item

@@ -74,7 +74,7 @@ def edit(item_id):
             db.session.commit()
 
             # change the membership table
-            # fixme: this just removes all the memberships this item has, then
+            # todo: this just removes all the memberships this item has, then
             # adds back the new set of memberships; it could be more efficient
             existing_memberships = Membership.query.filter(
                 Membership.member_id == item_id)

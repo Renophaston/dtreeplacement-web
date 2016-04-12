@@ -22,7 +22,7 @@ def item_detail(item_id):
         group_id = membership.group_id
         groups.append(Item.query.filter(Item.id == group_id).first())
     return render_template(
-        'items/item_detail.j2',
+        'items/detail.j2',
         item=item,
         groups=groups)
 
@@ -108,4 +108,4 @@ def edit(item_id):
 
 @items.errorhandler(404)
 def item_not_found(error):
-    return render_template('items/item_detail.j2', item=None), 404
+    return render_template('items/detail.j2', item=None), 404

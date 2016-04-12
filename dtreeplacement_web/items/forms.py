@@ -1,6 +1,7 @@
 import wtforms
 from wtforms.validators import DataRequired
 from models import Item, Membership
+from helpers import get_items
 
 
 class ItemForm(wtforms.Form):
@@ -26,8 +27,9 @@ class ItemForm(wtforms.Form):
             self.content.data = item.content
             # populate the groups list
             # if we're editing, don't include this item in the list of groups
-            all_groups = Item.query.filter(Item.id != item.id).order_by(
-                Item.content.asc()).all()
+            all_groups = Item.query\
+                .filter(Item.id != item.id, Item.status == Item.STATUS_NORMAL)\
+                .order_by(Item.content.asc()).all()
             selected_memberships = \
                 Membership.query.filter(Membership.member_id == item.id).all()
             self.groups.data = \
@@ -35,7 +37,7 @@ class ItemForm(wtforms.Form):
         else:
             # only if we're NOT editing an existing item
             # populate the groups list
-            all_groups = Item.query.order_by(Item.content.asc()).all()
+            all_groups = get_items()
 
         # populate the groups list
         self.groups.choices = \

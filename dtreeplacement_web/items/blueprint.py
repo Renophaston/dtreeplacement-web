@@ -2,13 +2,14 @@ from flask import Blueprint, render_template, redirect, url_for, request
 from models import Item, Membership
 from items.forms import ItemForm
 from app import db
+from helpers import get_items
 
 items = Blueprint('items', __name__, template_folder='templates')
 
 
 @items.route('/')
 def index():
-    all_items = Item.query.order_by(Item.content.asc()).all()
+    all_items = get_items()
     return render_template('items/index.j2', items=all_items)
 
 
@@ -19,8 +20,11 @@ def item_detail(item_id):
     groups = []
     # find all rows in Membership table that match this item in member_id
     for membership in Membership.query.filter(Membership.member_id == item_id):
-        group_id = membership.group_id
-        groups.append(Item.query.filter(Item.id == group_id).first())
+        group = Item.query.filter(Item.id == membership.group_id,
+                                  Item.status == Item.STATUS_NORMAL).first()
+        if group is not None:
+            groups.append(group)
+
     return render_template(
         'items/detail.j2',
         item=item,

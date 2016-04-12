@@ -7,6 +7,11 @@ import datetime
 
 class Item(db.Model):
     """Describes an item in our non-tree, ie 'Superman #235'."""
+
+    # Status (just whether it's been deleted or not, now)
+    STATUS_NORMAL = 0
+    STATUS_DELETED = 1
+
     # id, primary key
     id = db.Column(db.Integer, primary_key=True)
     # the content of the item, like a book title, currently just a string
@@ -17,6 +22,7 @@ class Item(db.Model):
         default=datetime.datetime.now,
         onupdate=datetime.datetime.now
     )
+    status = db.Column(db.SmallInteger, default=STATUS_NORMAL)
 
     def __init__(self, content):
         self.content = content

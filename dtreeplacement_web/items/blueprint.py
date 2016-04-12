@@ -110,6 +110,19 @@ def edit(item_id):
     return render_template('items/edit.j2', item=item, form=form)
 
 
+@items.route('/<item_id>/delete', methods=['GET', 'POST'])
+def delete(item_id):
+    item = Item.query.filter(Item.id == item_id).first_or_404()
+    if request.method == 'POST':
+        item.status = Item.STATUS_DELETED
+        db.session.add(item)
+        db.session.commit()
+        return redirect(url_for('items.index'))
+
+    return render_template('items/delete.j2', item=item)
+
+
 @items.errorhandler(404)
 def item_not_found(error):
     return render_template('items/detail.j2', item=None), 404
+

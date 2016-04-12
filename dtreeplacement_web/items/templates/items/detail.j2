@@ -8,6 +8,7 @@
         <li>Content: <code>{{ item.content }}</code></li>
         <li>Created: <code>{{ item.created_timestamp }}</code></li>
         <li>Modified: <code>{{ item.modified_timestamp }}</code></li>
+        <li>Status: <code>{{ item.status }}</code></li>
         {%- if groups %}
             <li>Member of:
             {% macro item_link(item_id, item_content) -%}

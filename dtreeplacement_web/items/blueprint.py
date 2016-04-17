@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request
 from models import Item, Membership
 from items.forms import ItemForm
 from app import db
-from helpers import get_items
+from helpers import get_items, get_deleted_items
 
 items = Blueprint('items', __name__, template_folder='templates')
 
@@ -10,7 +10,9 @@ items = Blueprint('items', __name__, template_folder='templates')
 @items.route('/')
 def index():
     all_items = get_items()
-    return render_template('items/index.j2', items=all_items)
+    deleted_items = get_deleted_items()
+    return render_template('items/index.j2', items=all_items,
+                           deleted_items=deleted_items)
 
 
 @items.route('/<int:item_id>')

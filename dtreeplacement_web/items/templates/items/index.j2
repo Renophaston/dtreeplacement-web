@@ -8,6 +8,15 @@
     {% endfor %}
     </ul>
 
+    {% if deleted_items %}
+        <h2>Deleted items</h2>
+        <ul>
+        {% for item in deleted_items %}
+            <li><a href="{{ url_for('items.item_detail', item_id=item.id) }}">{{ item.content }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
     <hr />
     <ul>
         <li><a href="{{ url_for('items.add') }}">Add item</a></li>

@@ -26,8 +26,17 @@
         <p>No item found with that ID.</p>
     {% endif %}
     <ul>
-        <a href="{{ url_for('items.edit', item_id=item.id) }}">Edit item</a>
-        <a href="{{ url_for('items.delete', item_id=item.id) }}">Delete item</a>
+        {%- if item %}
+            <a href="{{ url_for('items.edit', item_id=item.id) }}">Edit item</a>
+            <!--fixme: I want this to test against Item.STATUS_DELETED instead of a hardcoded int-->
+            {%- if item.status == 1 %}
+                <form action="{{ url_for('items.restore', item_id=item.id) }}" method="post">
+                    <button type="submit">Restore item</button>
+                </form>
+            {%- else %}
+                <a href="{{ url_for('items.delete', item_id=item.id) }}">Delete item</a>
+            {%- endif %}
+        {%- endif %}
         <a href="{{ url_for('items.index') }}">Back to item index</a>
     </ul>
 {% endblock content %}

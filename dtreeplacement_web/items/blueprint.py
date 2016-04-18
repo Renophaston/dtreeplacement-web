@@ -124,6 +124,18 @@ def delete(item_id):
     return render_template('items/delete.j2', item=item)
 
 
+@items.route('/<item_id>/restore', methods=['POST'])
+def restore(item_id):
+    item = Item.query.filter(Item.id == item_id).first_or_404()
+    if item.status == Item.STATUS_DELETED:
+        item.status = Item.STATUS_NORMAL
+        db.session.add(item)
+        db.session.commit()
+
+    # todo: some sort of error reporting is needed here
+    return redirect(url_for('items.item_detail', item_id=item_id))
+
+
 @items.errorhandler(404)
 def item_not_found(error):
     return render_template('items/detail.j2', item=None), 404

@@ -16,7 +16,7 @@ def index():
 
 
 @items.route('/<int:item_id>')
-def item_detail(item_id):
+def detail(item_id):
     item = Item.query.filter(Item.id == item_id).first_or_404()
     # list to hold all the Items of which this Item is a "member"
     groups = []
@@ -53,7 +53,7 @@ def add():
             db.session.commit()
 
             # then redirect to the item detail for the added item
-            return redirect(url_for('items.item_detail', item_id=item.id))
+            return redirect(url_for('items.detail', item_id=item.id))
         else:
             # todo: something better
             print("form didn't validate")
@@ -99,8 +99,8 @@ def edit(item_id):
             db.session.add_all(new_memberships)
             db.session.commit()
 
-            # then redirect to the item_detail for the changed item
-            return redirect(url_for('items.item_detail', item_id=item.id))
+            # then redirect to the detail for the changed item
+            return redirect(url_for('items.detail', item_id=item.id))
         else:
             # todo: something better
             print("form didn't validate")
@@ -133,7 +133,7 @@ def restore(item_id):
         db.session.commit()
 
     # todo: some sort of error reporting is needed here
-    return redirect(url_for('items.item_detail', item_id=item_id))
+    return redirect(url_for('items.detail', item_id=item_id))
 
 
 @items.errorhandler(404)

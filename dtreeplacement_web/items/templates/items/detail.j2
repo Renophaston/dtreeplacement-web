@@ -12,10 +12,10 @@
         {%- if groups %}
             <li>Member of:
             {% macro item_link(item_id, item_content) -%}
-                <a href="{{ url_for('items.item_detail', item_id=item_id) }}">{{ item_content }}</a>
+                <a href="{{ url_for('items.detail', item_id=item_id) }}">{{ item_content }}</a>
             {%- endmacro -%}
             {%- for group in groups -%}
-                <!--{{ "<a href='%s'>%s</a>"|format(url_for('items.item_detail', item_id=group.id), group.content) }}-->
+                <!--{{ "<a href='%s'>%s</a>"|format(url_for('items.detail', item_id=group.id), group.content) }}-->
                 {{- item_link(group.id, group.content) -}}
                 {%- if loop.last != True -%},  {% endif -%}
             {%- endfor -%}

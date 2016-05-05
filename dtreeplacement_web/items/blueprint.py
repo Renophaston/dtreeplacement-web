@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from models import Item, Membership
 from items.forms import ItemForm
 from app import db
@@ -53,6 +53,7 @@ def add():
             db.session.commit()
 
             # then redirect to the item detail for the added item
+            flash('Item {} has been added.'.format(item.id), 'info')
             return redirect(url_for('items.detail', item_id=item.id))
         else:
             # todo: something better
@@ -100,6 +101,7 @@ def edit(item_id):
             db.session.commit()
 
             # then redirect to the detail for the changed item
+            flash('Item {} successfully edited.'.format(item.id), 'info')
             return redirect(url_for('items.detail', item_id=item.id))
         else:
             # todo: something better
@@ -119,6 +121,7 @@ def delete(item_id):
         item.status = Item.STATUS_DELETED
         db.session.add(item)
         db.session.commit()
+        flash('Item {} successfully deleted.'.format(item.id), 'info')
         return redirect(url_for('items.index'))
 
     return render_template('items/delete.j2', item=item)
@@ -133,6 +136,7 @@ def restore(item_id):
         db.session.commit()
 
     # todo: some sort of error reporting is needed here
+    flash('Item {} successfully restored.'.format(item.id), 'info')
     return redirect(url_for('items.detail', item_id=item_id))
 
 

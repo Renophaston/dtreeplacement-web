@@ -13,6 +13,12 @@
     </head>
     <body>
         <h1>Defective Treeplacement</h1>
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+            <div class="message message-{{ category }}">
+                <button type="button" class="close">&times;</button>
+                {{ message }}
+            </div>
+        {% endfor %}
         {% block content %}{% endblock content %}
 
         <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->

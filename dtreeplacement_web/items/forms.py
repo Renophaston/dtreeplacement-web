@@ -9,6 +9,7 @@ class ItemForm(wtforms.Form):
     content = wtforms.StringField(
         'Content',
         validators=[DataRequired()],
+        description='e.g., "Superman #75"'
     )
     # items to select as "parents" for this item
     groups = wtforms.SelectMultipleField(
@@ -16,6 +17,7 @@ class ItemForm(wtforms.Form):
         # eventually this will be a search box w/ autocomplete
         # choices will get filled in __init__()
         coerce=int,
+        description='Select the groups this item should be a member of.'
     )
 
     def __init__(self, *args, **kwargs):

@@ -14,14 +14,20 @@ class Item(db.Model):
 
     # id, primary key
     id = db.Column(db.Integer, primary_key=True)
+
     # the content of the item, like a book title, currently just a string
     content = db.Column(db.Text, unique=True, nullable=False)
+
     created_timestamp = db.Column(db.DateTime, default=datetime.datetime.now)
+
+    # when this item was last modified
     modified_timestamp = db.Column(
         db.DateTime,
         default=datetime.datetime.now,
         onupdate=datetime.datetime.now
     )
+
+    # see valid statuses at the top of Item()
     status = db.Column(db.SmallInteger, default=STATUS_NORMAL)
 
     def __init__(self, content):
@@ -33,12 +39,16 @@ class Item(db.Model):
 
 class Membership(db.Model):
     """Connects an Item to another Item in a group-member relation."""
+
     # id, primary key
     id = db.Column(db.Integer, primary_key=True)
+
     # id of Item acting as group/parent
     group_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
+
     # id of Item acting as member/child
     member_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
+
     # only include a relationship in this table once
     __table_args__ = (
         db.UniqueConstraint(group_id, member_id),

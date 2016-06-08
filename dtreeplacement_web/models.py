@@ -5,10 +5,28 @@ from app import db
 import datetime
 
 
+# Connects an Item to another Item in a group-member relation.
+# http://docs.sqlalchemy.org/en/rel_0_9/orm/join_conditions.html#self-referential-many-to-many
+memberships = db.Table(
+    'memberships',
+    db.Column('group_id', db.Integer, db.ForeignKey('item.id'),
+              primary_key=True),
+    db.Column('member_id', db.Integer, db.ForeignKey('item.id'),
+              primary_key=True),
+    # don't let an Item be a member of a group more than once
+    db.UniqueConstraint('group_id', 'member_id', name='MemberOnceOnly'),
+    # don't let an Item be a member of itself
+    db.CheckConstraint('group_id != member_id', name='MemberOfItself')
+)
+
+
 class Item(db.Model):
     """Describes an item in our non-tree, ie 'Superman #235'."""
 
-    # Status (just whether it's been deleted or not, now)
+    # the table name in the database
+    __tablename__ = 'item'
+
+    # potential statuses (just whether it's been deleted or not, currently)
     STATUS_NORMAL = 0
     STATUS_DELETED = 1
 
@@ -30,6 +48,25 @@ class Item(db.Model):
     # see valid statuses at the top of Item()
     status = db.Column(db.SmallInteger, default=STATUS_NORMAL)
 
+    # helpers to affect changes in membership table
+    # members is a list of all Items that are "members" of this Item
+    members = db.relationship(
+        'Item',
+        secondary=memberships,
+        primaryjoin=id==memberships.c.group_id,
+        secondaryjoin=id==memberships.c.member_id,
+        backref='group'
+    )
+
+    # groups is a list of all Items of which this Item is a member
+    groups = db.relationship(
+        'Item',
+        secondary=memberships,
+        primaryjoin=id==memberships.c.member_id,
+        secondaryjoin=id==memberships.c.group_id,
+        backref='member'
+    )
+
     def __init__(self, content):
         self.content = content
 
@@ -37,8 +74,12 @@ class Item(db.Model):
         return '<Item: {}>'.format(self.content)
 
 
+# obsolete table
 class Membership(db.Model):
     """Connects an Item to another Item in a group-member relation."""
+
+    # the table name in the database
+    __tablename__ = 'membership'
 
     # id, primary key
     id = db.Column(db.Integer, primary_key=True)
@@ -48,6 +89,11 @@ class Membership(db.Model):
 
     # id of Item acting as member/child
     member_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
+
+    # I *think* these are just for internal convenience, and don't affect the
+    # database itself.
+    group = db.relationship('Item', foreign_keys='Membership.group_id')
+    member = db.relationship('Item', foreign_keys='Membership.member_id')
 
     # only include a relationship in this table once
     __table_args__ = (
@@ -60,7 +106,7 @@ class Membership(db.Model):
         self.member_id = member_id
 
     def __repr__(self):
-        return '<Membership: item {0} is in group {1}>'.format(
-            self.member_id,
-            self.group_id
+        return '<Membership: item \'{0}\' is in group \'{1}\'>'.format(
+            self.member.content,
+            self.group.content,
         )

@@ -1,4 +1,5 @@
 {% extends 'base.j2' %}
+{% from "macros/item_link.j2" import item_link %}
 {% block title %}Item Detail{% endblock %}
 {% block content %}
     {%- if item %}
@@ -11,14 +12,18 @@
         <li>Status: <code>{{ item.status }}</code></li>
         {%- if groups %}
             <li>Member of:
-            {% macro item_link(item_id, item_content) -%}
-                <a href="{{ url_for('items.detail', item_id=item_id) }}">{{ item_content }}</a>
-            {%- endmacro -%}
-            {%- for group in groups -%}
-                <!--{{ "<a href='%s'>%s</a>"|format(url_for('items.detail', item_id=group.id), group.content) }}-->
-                {{- item_link(group.id, group.content) -}}
-                {%- if loop.last != True -%},  {% endif -%}
-            {%- endfor -%}
+            {% for group in groups %}
+                {{ item_link(group) -}}
+                {% if loop.last != True %},  {% endif %}
+            {% endfor %}
+            </li>
+        {% endif %}
+        {% if groups %}
+            <li>Members:
+            {% for member in members %}
+                {{ item_link(member) -}}
+                {% if loop.last != True %},  {% endif %}
+            {% endfor %}
             </li>
         {%- endif %}
     </ul>

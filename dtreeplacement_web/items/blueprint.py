@@ -18,19 +18,20 @@ def index():
 @items.route('/<int:item_id>')
 def detail(item_id):
     item = Item.query.filter(Item.id == item_id).first_or_404()
-    # list to hold all the Items of which this Item is a "member"
-    groups = []
-    # find all rows in Membership table that match this item in member_id
-    for membership in Membership.query.filter(Membership.member_id == item_id):
-        group = Item.query.filter(Item.id == membership.group_id,
-                                  Item.status == Item.STATUS_NORMAL).first()
-        if group is not None:
-            groups.append(group)
+
+    # # find all rows in Membership table that match this item in member_id
+    # for membership in Membership.query.filter(Membership.member_id == item_id):
+    #     group = Item.query.filter(Item.id == membership.group_id,
+    #                               Item.status == Item.STATUS_NORMAL).first()
+    #     if group is not None:
+    #         groups.append(group)
 
     return render_template(
         'items/detail.j2',
         item=item,
-        groups=groups)
+        groups=item.groups,
+        members=item.members
+    )
 
 
 @items.route('/add', methods=['GET', 'POST'])

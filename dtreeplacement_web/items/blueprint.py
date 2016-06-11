@@ -62,35 +62,22 @@ def add():
 
 @items.route('/<item_id>/edit', methods=['GET', 'POST'])
 def edit(item_id):
+    # retrieve the item we're going to edit
     item = Item.query.filter(Item.id == item_id).first_or_404()
+
     if request.method == 'POST':
         # we received data, so modify the database
         form = ItemForm(request.form, obj=item)
         if form.validate():
+            # replace the content
             item.content = form.content.data
+
+            # replace the list of groups
+            item.groups =\
+                [Item.query.get(group_id) for group_id in form.groups.data]
+
+            # commit our changes
             db.session.add(item)
-            # have to commit this before doing stuff in another table which
-            # references this one
-            db.session.commit()
-
-            # change the membership table
-            # todo: this just removes all the memberships this item has, then
-            # adds back the new set of memberships; it could be more efficient
-            existing_memberships = Membership.query.filter(
-                Membership.member_id == item_id)
-            new_memberships = [Membership(group_id, item_id)
-                               for group_id in form.groups.data]
-
-            # delete old relationships
-            for existing_membership in existing_memberships:
-                db.session.delete(existing_membership)
-            # if I didn't commit these before adding the new ones, I'd get a
-            # uniqueness exception; I guess it doesn't just do this part first
-            # by itself
-            db.session.commit()
-
-            # add the new memberships to the database
-            db.session.add_all(new_memberships)
             db.session.commit()
 
             # then redirect to the detail for the changed item

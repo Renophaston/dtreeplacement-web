@@ -26,22 +26,30 @@ def create_tables():
         message='ATTEMPTED to create tables, anyway.'
     )
 
+from models import Item
 
-# @app.route('/item')
-# def item_index():
-#     items = Item.query.all()
-#     return render_template('item.j2', items=items)
-#
-#
-# @app.route('/item/<int:item_id>')
-# def item_view(item_id):
-#     item = Item.query.filter(Item.id == item_id).first()
-#     if item is None:
-#         message = 'No fucking items matching id {}.'.format(item_id)
-#     else:
-#         message = 'Item {}: {}'.format(item_id, item.content)
-#     return render_template(
-#         'index.j2',
-#         title='Item',
-#         message=message
-#     )
+@app.route('/test')
+def test():
+    # item1 = Item('first1')
+    # item2 = Item('second1')
+    # item3 = Item('third1')
+    # item1.members.append(item2)
+    # item1.members.append(item3)
+    # item2.members.append(item1)
+    # db.session.add(item1)
+    # db.session.add(item2)
+    # db.session.add(item3)
+    # db.session.add(item2)
+    # print(item.groups)
+    # item.members.remove(Item.query.get(9))
+    # item = Item.query.get(1)
+    # item.members.append(item)
+    # db.session.add(item)
+    # item2 = Item.query.get(2)
+    # item2.members.append(Item.query.get(1))
+    # db.session.add(item2)
+    # item1 = Item.query.get(1)
+    # item1.members.append(item1)
+    # db.session.commit()
+
+    return render_template('index.j2')

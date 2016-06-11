@@ -27,15 +27,15 @@ class ItemForm(wtforms.Form):
         if 'item' in kwargs:
             item = kwargs['item']
             self.content.data = item.content
+
             # populate the groups list
             # if we're editing, don't include this item in the list of groups
             all_groups = Item.query\
                 .filter(Item.id != item.id, Item.status == Item.STATUS_NORMAL)\
                 .order_by(Item.content.asc()).all()
-            selected_memberships = \
-                Membership.query.filter(Membership.member_id == item.id).all()
-            self.groups.data = \
-                [membership.group_id for membership in selected_memberships]
+
+            # the groups that should already be selected on load
+            self.groups.data = [group.id for group in item.groups]
         else:
             # only if we're NOT editing an existing item
             # populate the groups list

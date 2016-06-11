@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from models import Item, Membership
+from models import Item
 from items.forms import ItemForm
 from app import db
 from helpers import get_items, get_deleted_items

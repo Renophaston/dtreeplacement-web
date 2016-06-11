@@ -1,6 +1,6 @@
 import wtforms
 from wtforms.validators import DataRequired
-from models import Item, Membership
+from models import Item
 from helpers import get_items
 
 

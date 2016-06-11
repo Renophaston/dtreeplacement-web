@@ -9,23 +9,16 @@ items = Blueprint('items', __name__, template_folder='templates')
 
 @items.route('/')
 def index():
-    all_items = get_items()
-    deleted_items = get_deleted_items()
-    return render_template('items/index.j2', items=all_items,
-                           deleted_items=deleted_items)
+    return render_template('items/index.j2', items=get_items(),
+                           deleted_items=get_deleted_items())
 
 
 @items.route('/<int:item_id>')
 def detail(item_id):
+    # retrieve item
     item = Item.query.filter(Item.id == item_id).first_or_404()
 
-    # # find all rows in Membership table that match this item in member_id
-    # for membership in Membership.query.filter(Membership.member_id == item_id):
-    #     group = Item.query.filter(Item.id == membership.group_id,
-    #                               Item.status == Item.STATUS_NORMAL).first()
-    #     if group is not None:
-    #         groups.append(group)
-
+    # todo: filter out deleted items
     return render_template(
         'items/detail.j2',
         item=item,
@@ -43,14 +36,13 @@ def add():
             # create an Item and fill it with the form data
             # (remember, the groups aren't accounted for right here)
             item = Item(form.content.data)
-            db.session.add(item)
-            # need to add the item before the Membership table can refer to it
-            db.session.commit()
 
-            # then add the appropriate entries in the membership table
-            memberships = [Membership(group_id, item.id)
-                           for group_id in form.groups.data]
-            db.session.add_all(memberships)
+            # then add the appropriate memberships
+            for group_id in form.groups.data:
+                item.members.append(Item.query.get(group_id))
+
+            # commit the changes
+            db.session.add(item)
             db.session.commit()
 
             # then redirect to the item detail for the added item
